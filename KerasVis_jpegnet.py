@@ -157,7 +157,10 @@ if __name__ == '__main__':
         # Localise only for the images that are correctly classified
         if decoded_test_labels[k] == predicted_labels[k]:
 
-            heatmap_storage = np.zeros((3,) + test_img.shape[:2] + (3*len(classes),), dtype=np.uint8)
+            # Tuple of size (modifiers, img_size, img_size, 3*number of classes), for example: (3, 64, 64, 6). In
+            # practice, the i-th, j-th element (i, 64, 64, j) is the heatmap for the i-th modifier relatively
+            # j-th class (j has 3 channels since it is a RGB map)
+            heatmap_storage = np.zeros((len(modifiers),) + test_img.shape[:2] + (3*len(classes),), dtype=np.uint8)
 
             count = 0
             for modifier in modifiers:
