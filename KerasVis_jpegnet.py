@@ -183,7 +183,7 @@ if __name__ == '__main__':
             # Create a composite image showing the original content, the high pass content and the heatmaps for all
             # modifiers and for both classes
             test_lowpass = scipy.misc.imread(jpeg_files[k])
-            collage = make_collage(heatmap_storage, test_img, test_lowpass)
+            collage = make_collage_2(heatmap_storage, test_img, test_lowpass)
 
             # Save the detection output
             workdir = 'C:/Users/utente/PycharmProjects/FiltersVisualisation_Keras/Localisation'
