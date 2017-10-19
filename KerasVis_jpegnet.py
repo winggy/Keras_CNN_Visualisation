@@ -125,15 +125,19 @@ if __name__ == '__main__':
     model.save('tmp.h5')
     model = load_model('tmp.h5')
     os.remove('tmp.h5')
-
+    
+    # --------------------------------------------------------------------------------------------------------------
+    # LOCALISATION 
+    # --------------------------------------------------------------------------------------------------------------
+    
+    ITER_VERBOSE = 250
+    
     # Three different visualisation modes, the last one being the best
     modifiers = ['relu'] # [None, 'relu', 'guided']
 
     # Classes: single JPEG and double JPEG
     classes = 0 # [0, 1]
-
-    ITER_VERBOSE = 250
-
+    
     heatmap_single = np.zeros((N_TEST_IMG, IMG_SIZE, IMG_SIZE, 3), dtype=np.uint8)
     heatmap_double = np.zeros((N_TEST_IMG, IMG_SIZE, IMG_SIZE, 3), dtype=np.uint8)
 
