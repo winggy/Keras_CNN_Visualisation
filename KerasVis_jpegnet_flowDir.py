@@ -9,6 +9,7 @@ import numpy as np
 import scipy.misc
 import time
 from glob import glob
+from utils import draw_captions
 
 
 def read_hdf5_compressed(hdf5_file):
@@ -211,6 +212,7 @@ if __name__ == '__main__':
                                                          os.path.splitext(img_name)[0])
        
             scipy.misc.imsave(out_file, collage)
+            draw_captions(out_file, out_file)
 
             # ------------------------------------------------------------------------------
             # Save activation maps as data matrices 
