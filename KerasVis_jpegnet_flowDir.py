@@ -148,8 +148,8 @@ if __name__ == '__main__':
     # Three different visualisation modes, the last one being the best
     modifier = 'guided'  # [None, 'relu', 'guided']
 
-    # Classes: single JPEG and double JPEG
-    classes = 0  # [0, 1]
+    # Classes: single JPEG (1) and double JPEG (0)
+    classes = [0, 1]
 
     heatmap_single = np.zeros((N_TEST_IMG, IMG_SIZE, IMG_SIZE, 3), dtype=np.uint8)
     heatmap_double = np.zeros((N_TEST_IMG, IMG_SIZE, IMG_SIZE, 3), dtype=np.uint8)
@@ -173,25 +173,21 @@ if __name__ == '__main__':
             # Tuple of size (modifiers, img_size, img_size, 3*number of classes), for example: (3, 64, 64, 6). In
             # practice, the i-th, j-th element (i, 64, 64, j) is the heatmap for the i-th modifier relatively
             # j-th class (j has 3 channels since it is a RGB map)
-            heatmap_storage = np.zeros((1,) + test_img.shape[:2] + (3 * 2,), dtype=np.uint8)
+            heatmap_storage = np.zeros((1,) + test_img.shape[:2] + (3 * len(classes),), dtype=np.uint8)
 
-            count = 0
-            #modifier in modifiers:
-
-            #for cl in classes:
-            cl = 0
-            # Localisation of activating regions given a class cl = 1 (double)
+            # Localisation of activating regions given a class cl = 1 (single)
             heatmap = visualize_cam(model,
                                     layer_idx,
                                     filter_indices=1,
                                     seed_input=test_img,
                                     backprop_modifier=modifier)
 
+            # Localisation of activating regions given a class cl = 0 (double)
             heatmap_d = visualize_cam(model,
-                                    layer_idx,
-                                    filter_indices=0,
-                                    seed_input=test_img,
-                                    backprop_modifier=modifier)
+                                      layer_idx,
+                                      filter_indices=0,
+                                      seed_input=test_img,
+                                      backprop_modifier=modifier)
 
             # Convert to RGB for display purposes
             if test_img.shape[2] < 3:
@@ -202,14 +198,13 @@ if __name__ == '__main__':
             heatmap_storage[0, :, :, 0:3] = overlayed_map
             heatmap_storage[0, :, :, 3:6] = overlayed_map_d
 
-            #count = count + 1
-
-            # Create a composite image showing the original content, the high pass content and the heatmaps for all
-            # modifiers and for both classes
+            # Create a composite image showing the original content, the high pass content and the heatmaps
             test_lowpass = scipy.misc.imread(jpeg_files[k])
             collage = make_collage(heatmap_storage, test_img, test_lowpass)
 
-            # Save the detection output
+            # ------------------------------------------------------------------------------
+            # Save the detection output as images
+            # ------------------------------------------------------------------------------
             workdir = 'C:/Users/utente/PycharmProjects/FiltersVisualisation_Keras/Localisation'
             img_class_name = 'single' if decoded_test_labels[k] == 1 else 'double'
             img_name = os.path.basename(jpeg_files[k])
@@ -219,8 +214,12 @@ if __name__ == '__main__':
                                                                 os.path.splitext(img_name)[0]),
                               collage)
 
-            np.save(('{}/{}/matrixData_{}_{}_{}.npy'.format(workdir,
-                                                            img_class_name, k,
-                                                            img_class_name,
-                                                            os.path.splitext(img_name)[0])),
-                    overlayed_map)
+            # ------------------------------------------------------------------------------
+            # Save activation maps as data matrices
+            # ------------------------------------------------------------------------------
+            np.savez(('{}/{}/matrixData_{}_{}_{}.npz'.format(workdir,
+                                                             img_class_name, k,
+                                                             img_class_name,
+                                                             os.path.splitext(img_name)[0])),
+                     gradcam_single=overlayed_map,
+                     gradcam_double=overlayed_map_d)
