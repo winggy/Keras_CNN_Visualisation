@@ -112,7 +112,6 @@ if __name__ == '__main__':
             scipy.misc.imsave('detection/{}/single_{:.1f}_double_{:.1f}_out={}.png'.format(current_folder, 1-p, p, class_name), 
                               scipy.misc.imresize(res,100))
             
-            np.savez('detection/{}/single_{:.1f}_double_{:.1f}_out={}.npz'.format(current_folder, 1-p, p, class_name),
-                     gradcam_single=heatmap_single,
-                     gradcam_double=heatmap_double)
-             
+            np.save('detection/{}/single_{:.1f}_double_{:.1f}_out={}_gradcam_single.mat'.format(current_folder, 1-p, p, class_name), heatmap_single)
+            np.save('detection/{}/single_{:.1f}_double_{:.1f}_out={}_gradcam_double.mat'.format(current_folder, 1-p, p, class_name), heatmap_double)
+                    
