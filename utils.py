@@ -1,13 +1,13 @@
 import os
 
 
-def draw_text(img_file='map_without_bar.png', output_dir=None):
+def draw_captions(img_file, output_dir=None):
 
-    """ Draws a text bar with values above the legend
+    """ Draws a text bar with labels on top of the image
 
     Args:
-       img_file -- the path to the final output image (Default: 'map_without_bar.png')
-       output_dir -- the directory of the output image (Default: current directory)
+       img_file -- the path to the intput image
+       output_dir -- the directory of the output image
     """
 
     from PIL import Image, ImageFont, ImageDraw
