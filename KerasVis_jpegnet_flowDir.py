@@ -35,7 +35,7 @@ def read_hdf5_compressed(hdf5_file):
     return training_data, testing_data, training_labels, testing_labels
 
 
-def make_collage(heatmaps, input_img, test_lowpass=[], pxl_margin=5):
+def make_collage(heatmaps, input_img, test_lowpass=[], pxl_margin=5, title=True):
     
     """ Creates a composite image by putting side to side the input image and its 
         class activation maps (once for each class)
@@ -71,8 +71,11 @@ def make_collage(heatmaps, input_img, test_lowpass=[], pxl_margin=5):
                                   ver_frame, heatmaps[0, :, :, 0:3],
                                   ver_frame, heatmaps[0, :, :, 3:6],
                                   ver_frame), axis=1)
+    zoom = 1  
+    if (title):
+        zoom = 8
         
-    return np.concatenate((hor_frame, collage, hor_frame), axis=0)
+    return np.concatenate((np.tile(hor_frame, (zoom, 1)), collage, hor_frame), axis=0)
 
 
 if __name__ == '__main__':
