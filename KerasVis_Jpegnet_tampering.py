@@ -109,7 +109,9 @@ if __name__ == '__main__':
 
             # Store maps and data
             class_name = 'single' if class_label == 1 else 'double'
-            scipy.misc.imsave('detection/{}/single_{:.1f}_double_{:.1f}_out={}.png'.format(current_folder, 1-p, p, class_name), scipy.misc.imresize(res,100))
+            scipy.misc.imsave('detection/{}/single_{:.1f}_double_{:.1f}_out={}.png'.format(current_folder, 1-p, p, class_name), 
+                              scipy.misc.imresize(res,100))
+            
             np.savez('detection/{}/single_{:.1f}_double_{:.1f}_out={}.npz'.format(current_folder, 1-p, p, class_name),
                      gradcam_single=heatmap_single,
                      gradcam_double=heatmap_double)
