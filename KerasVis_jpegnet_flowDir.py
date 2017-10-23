@@ -62,9 +62,8 @@ def make_collage(heatmaps, input_img, test_lowpass=[], pxl_margin=5, title=True)
         test_lowpass = np.reshape(test_lowpass, test_lowpass.shape + (1,))
         test_lowpass = np.tile(test_lowpass, (1, 1, 3))
 
-    # Vertical and horizontal portions of the white frame
+    # Vertical portion of the white frame
     ver_frame = 255 * np.ones((input_img.shape[0], pxl_margin, 3), dtype=heatmaps.dtype)
-    hor_frame = 255 * np.ones((pxl_margin, collageTop.shape[1], 3))
 
     # Create collage: a single class activation map
     if heatmaps.shape[-1] == 3:
@@ -72,14 +71,18 @@ def make_collage(heatmaps, input_img, test_lowpass=[], pxl_margin=5, title=True)
                                   ver_frame, test_lowpass,
                                   ver_frame, heatmaps[0, :, :, 0:3],
                                   ver_frame), axis=1)
-        
+
     # Create collage: two class activation maps
-    elif heatmaps.shape[-1] == 6: 
+    elif heatmaps.shape[-1] == 6:
         collage = np.concatenate((ver_frame, input_img_rgb,
                                   ver_frame, test_lowpass,
                                   ver_frame, heatmaps[0, :, :, 0:3],
                                   ver_frame, heatmaps[0, :, :, 3:6],
                                   ver_frame), axis=1)
+
+    # Horizontal portion of the white frame
+    hor_frame = 255 * np.ones((pxl_margin, collage.shape[1], 3))
+    
     zoom = 1  
     if (title):
         zoom = 8
