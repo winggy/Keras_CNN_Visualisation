@@ -211,6 +211,7 @@ if __name__ == '__main__':
                                                          img_class_name,
                                                          os.path.splitext(img_name)[0])
        
+            # Save the composite image, then reload it and put text labels above each sub-image
             scipy.misc.imsave(out_file, collage)
             draw_captions(out_file, out_file)
 
