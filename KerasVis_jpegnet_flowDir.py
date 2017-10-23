@@ -67,14 +67,14 @@ def make_collage(heatmaps, input_img, test_lowpass=[], pxl_margin=5, title=True)
     hor_frame = 255 * np.ones((pxl_margin, collageTop.shape[1], 3))
 
     # Create collage: a single class activation map
-    if heatmaps.shape[-1] = 3:
+    if heatmaps.shape[-1] == 3:
         collage = np.concatenate((ver_frame, input_img_rgb,
                                   ver_frame, test_lowpass,
                                   ver_frame, heatmaps[0, :, :, 0:3],
                                   ver_frame), axis=1)
         
     # Create collage: two class activation maps
-    elif heatmaps.shape[-1] = 6: 
+    elif heatmaps.shape[-1] == 6: 
         collage = np.concatenate((ver_frame, input_img_rgb,
                                   ver_frame, test_lowpass,
                                   ver_frame, heatmaps[0, :, :, 0:3],
