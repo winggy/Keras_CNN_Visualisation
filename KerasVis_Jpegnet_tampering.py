@@ -7,6 +7,7 @@ from vis.utils import utils
 from keras import activations
 from vis.visualization import overlay, visualize_cam
 import scipy.misc
+from utils import draw_captions
 
 
 if __name__ == '__main__':
@@ -109,9 +110,15 @@ if __name__ == '__main__':
 
             # Store maps and data
             class_name = 'single' if class_label == 1 else 'double'
-            scipy.misc.imsave('detection/{}/single_{:.1f}_double_{:.1f}_out={}.png'.format(current_folder, 1-p, p, class_name), 
-                              scipy.misc.imresize(res,100))
             
-            np.save('detection/{}/single_{:.1f}_double_{:.1f}_out={}_gradcam_single.mat'.format(current_folder, 1-p, p, class_name), heatmap_single)
-            np.save('detection/{}/single_{:.1f}_double_{:.1f}_out={}_gradcam_double.mat'.format(current_folder, 1-p, p, class_name), heatmap_double)
+            out_file = 'detection/{}/single_{:.1f}_double_{:.1f}_out={}.png'.format(current_folder, 1-p, p, class_name)
+            
+            # Save the composite image, then reload it and put text labels above each sub-image
+            scipy.misc.imsave(out_file, res)
+            draw_captions(out_file, out_file, labels=['Mask','Composite','g-CAM single','g-CAM double'])
+            
+            # Save with .mat extension (.txt would be the same). Load in Matlab with
+            # x = load(filename, '-ascii')
+            np.savetxt('detection/{}/single_{:.1f}_double_{:.1f}_out={}_gradcam_single.mat'.format(current_folder, 1-p, p, class_name), heatmap_single)
+            np.savetxt('detection/{}/single_{:.1f}_double_{:.1f}_out={}_gradcam_double.mat'.format(current_folder, 1-p, p, class_name), heatmap_double)
                     
