@@ -215,5 +215,5 @@ if __name__ == '__main__':
                                                              img_class_name, k,
                                                              img_class_name,
                                                              os.path.splitext(img_name)[0])),
-                     gradcam_single=overlayed_map,
-                     gradcam_double=overlayed_map_d)           
+                     gradcam_single=heatmap,
+                     gradcam_double=heatmap_d)           
