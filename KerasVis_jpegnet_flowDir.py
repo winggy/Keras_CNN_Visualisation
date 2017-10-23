@@ -205,11 +205,12 @@ if __name__ == '__main__':
             # ------------------------------------------------------------------------------
             # Save the detection output as images
             # ------------------------------------------------------------------------------
-            scipy.misc.imsave('{}/{}/image_{}_{}_{}.png'.format(workdir,
-                                                                img_class_name, k,
-                                                                img_class_name,
-                                                                os.path.splitext(img_name)[0]),
-                              collage)
+            out_file = '{}/{}/image_{}_{}_{}.png'.format(workdir,
+                                                         img_class_name, k,
+                                                         img_class_name,
+                                                         os.path.splitext(img_name)[0])
+       
+            scipy.misc.imsave(out_file, collage)
 
             # ------------------------------------------------------------------------------
             # Save activation maps as data matrices 
