@@ -87,32 +87,45 @@ def make_collage_2(heatmaps, input_img, test_lowpass=[], pxl_margin=5):
 
 if __name__ == '__main__':
 
+    # Number of test images for each class !! REMINDER: Single_JPEG has label=1, Double_JPEG has label=0 !!
     N_TEST_IMG = 1500
+    
+    # Patch size
     IMG_SIZE = 256
 
-    # JPEG images folder
+    # ---------------------------------------------------------------------------------------------------------------------
+    # DATA PREPARATION
+    # ---------------------------------------------------------------------------------------------------------------------
+    
+    # Folders containing JPEG images (used to create the composite image with class activations)
     jpeg_path = 'C:/Users/utente/PycharmProjects/TensorflowTests/data/singleVSdouble/input_data/TEST'
     single_jpeg_files_path = jpeg_path+'/single_pixel/*.jpg'
     double_jpeg_files_path = jpeg_path+'/double_pixel/*.jpg'
 
+    # Get a file list, whose length depends on how many images we are considering
     single_files = sorted(glob(single_jpeg_files_path))
     double_files = sorted(glob(double_jpeg_files_path))
-
     jpeg_files = single_files[:N_TEST_IMG] + double_files[:N_TEST_IMG]
-
-    # Load the trained CNN model
-    modelpath = r'C:\Users\utente\PycharmProjects\TensorflowTests\single-vs-double_keras\trainedmodel\snapshots\final_trained_model.h5'
-    model = load_model(modelpath)
-
-    # Load the test data (high-pass image component)
+    
+    # Load the test data (high-pass image component) used to compute class activation maps
     hdf5_file = 'C:/Users/utente/PycharmProjects/TensorflowTests/data/singleVSdouble/output_data/jpeg_60_95_aligned_{}x{}.h5'.format(IMG_SIZE, IMG_SIZE)
     training_data, testing_data, training_labels, testing_labels = read_hdf5_compressed(hdf5_file)
 
-    # Compute predictions and extrapolate class label from it
-    predictions = model.predict(testing_data/255., verbose=1)
+    # ---------------------------------------------------------------------------------------------------------------------
+    # MODEL PREPARATION
+    # ---------------------------------------------------------------------------------------------------------------------
+    
+    # Load the trained CNN model
+    modelpath = r'C:\Users\utente\PycharmProjects\TensorflowTests\single-vs-double_keras_{}x{}\trainedmodel\snapshots\final_trained_model.h5'.format(IMG_SIZE, IMG_SIZE)
+    model = load_model(modelpath)
+
+    # Check accuracy and then compute predictions and extrapolate class labels from them
+    accuracy = model.predict(testing_data/255., verbose=1)
+    print('Test accuracy {:g}. Loss {:g}'.format(accuracy[1], accuracy[0]))
+    
     predicted_labels = np.argmax(predictions, axis=1)
 
-    # Decode one-hot labels stored in the input archive
+    # Decode one-hot ground-truth labels stored in the input archive
     decoded_test_labels = np.argmax(testing_labels, axis=1)
 
     # Search for layer index by name. Alternatively, set this to -1 since it corresponds to the last layer
@@ -130,19 +143,17 @@ if __name__ == '__main__':
     # LOCALISATION 
     # --------------------------------------------------------------------------------------------------------------
     
+    # Update frequency is controlled by this parameter
     ITER_VERBOSE = 250
     
     # Three different visualisation modes, the last one being the best
-    modifiers = ['relu'] # [None, 'relu', 'guided']
+    modifiers = ['guided'] # [None, 'relu', 'guided']
 
     # Classes: single JPEG and double JPEG
     classes = 0 # [0, 1]
     
     heatmap_single = np.zeros((N_TEST_IMG, IMG_SIZE, IMG_SIZE, 3), dtype=np.uint8)
     heatmap_double = np.zeros((N_TEST_IMG, IMG_SIZE, IMG_SIZE, 3), dtype=np.uint8)
-
-    # heatmap_single = np.zeros((2*N_TEST_IMG, IMG_SIZE, IMG_SIZE, 3), dtype=np.uint8)
-    # heatmap_double = np.zeros((2*N_TEST_IMG, IMG_SIZE, IMG_SIZE, 3), dtype=np.uint8)
 
     print()
     print('Computing localisation maps ... ')
