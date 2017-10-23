@@ -1,3 +1,9 @@
+"""
+    File name: Visualise_filters.py
+    Author: Andrea Costanzo, University of Siena, andreacos82@gmail.com
+    Python Version: 3.5
+"""
+
 import os
 
 
