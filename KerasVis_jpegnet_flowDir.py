@@ -107,7 +107,7 @@ if __name__ == '__main__':
     # Load the test data (high-pass image component)
     hdf5_file = 'C:/Users/utente/PycharmProjects/TensorflowTests/data/singleVSdouble/output_data/jpeg_60_95_aligned_{}x{}.h5'.format(
         IMG_SIZE, IMG_SIZE)
-    training_data, testing_data, training_labels, testing_labels = read_hdf5_compressed(hdf5_file)
+    _, testing_data, _, testing_labels = read_hdf5_compressed(hdf5_file)
  
     # ---------------------------------------------------------------------------------------------------------------------
     # MODEL PREPARATION
