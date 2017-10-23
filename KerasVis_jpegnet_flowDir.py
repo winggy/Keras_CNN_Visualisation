@@ -126,8 +126,9 @@ if __name__ == '__main__':
     model = load_model(modelpath)
 
     # Check accuracy and then compute predictions and extrapolate class labels from them
-    accuracy = model.predict(testing_data/255., verbose=1)
+    accuracy = model.evaluate(testing_data/255, testing_labels, verbose=1)
     print('Test accuracy {:g}. Loss {:g}'.format(accuracy[1], accuracy[0]))
+    predictions = model.predict(testing_data/255., verbose=1)
     predicted_labels = np.argmax(predictions, axis=1)
 
     # Decode one-hot ground-truth labels stored in the input archive
