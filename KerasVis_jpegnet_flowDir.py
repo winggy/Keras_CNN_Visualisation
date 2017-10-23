@@ -45,8 +45,10 @@ def make_collage(heatmaps, input_img, test_lowpass=[], pxl_margin=5, title=True)
     input_img  -- the input image content (grayscale or RGB)
     test_lowpass -- the highpass component of the input image
     pxl_margin -- margins of the white frame around the composite image
+    tille -- if true, the top frame is larger so that a title can be drawn there later
     """
     
+    # Deal with grayscale
     if input_img.shape[2] < 3:
         input_img_rgb = np.tile(input_img, (1, 1, 3))
 
@@ -160,7 +162,7 @@ if __name__ == '__main__':
             print('Processed {:6d} of {:6d} images ({:3.1f}%. Elapsed: {:5.1f} seconds)'
                   .format(k, n_files, 100 * k / n_files, time.time() - begin_time))
 
-        # Get nme, class and data of the current image
+        # Get name, class and data of the current image
         img_class_name = 'single' if decoded_test_labels[k] == 1 else 'double'
         img_name = os.path.basename(jpeg_files[k])
         test_img = testing_data[k]
