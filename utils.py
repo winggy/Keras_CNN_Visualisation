@@ -1,7 +1,7 @@
 import os
 
 
-def draw_captions(img_file, output_dir=None):
+def draw_captions(img_file, output_dir, labels = ['content', 'high-pass', 'g-CAM single', 'g-CAM double']):
 
     """ Draws a text bar with labels on top of the image
 
@@ -12,24 +12,19 @@ def draw_captions(img_file, output_dir=None):
 
     from PIL import Image, ImageFont, ImageDraw
 
-
     source_img = Image.open(img_file).convert("RGBA")
 
     draw = ImageDraw.Draw(source_img)
 
-    labels = ['content', 'high-pass', 'g-CAM single', 'g-CAM double']
     offset = 10
-    for i in range(0,4):
+    for i in range(0, len(labels)):
         draw.text((offset,1), labels[i], font=ImageFont.truetype("arial", 35), fill="red")
-        offset = offset + int(0.25 * source_img.width)
+        offset = offset + int((1/len(labels)) * source_img.width)
 
     # Get rid of the temp file
     os.remove(img_file)
 
     # Save new file
-    if output_dir is None:
-        source_img.save('final_map.png', "PNG")
-    else:
-        source_img.save(os.path.join(output_dir, 'final_map.png'), "PNG")
+    source_img.save(output_dir, "PNG")
 
     return
