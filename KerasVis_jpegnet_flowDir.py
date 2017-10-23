@@ -209,11 +209,20 @@ if __name__ == '__main__':
                               collage)
 
             # ------------------------------------------------------------------------------
-            # Save activation maps as data matrices
+            # Save activation maps as data matrices 
             # ------------------------------------------------------------------------------
-            np.savez(('{}/{}/matrixData_{}_{}_{}.npz'.format(workdir,
+            
+            # Save with .mat extension (.txt would be the same). Load in Matlab with
+            # x = load(filename, '-ascii')
+            np.savetxt(('{}/Data/{}/matrixData_{}_{}_{}_gradcam_single.mat'.format(workdir,
                                                              img_class_name, k,
                                                              img_class_name,
                                                              os.path.splitext(img_name)[0])),
-                     gradcam_single=heatmap,
-                     gradcam_double=heatmap_d)           
+                     gradcam_single=heatmap)
+            
+            np.savetxt(('{}/Data/{}/matrixData_{}_{}_{}_gradcam_double.mat'.format(workdir,
+                                                             img_class_name, k,
+                                                             img_class_name,
+                                                             os.path.splitext(img_name)[0])),
+                     gradcam_single=heatmap_d)
+  
