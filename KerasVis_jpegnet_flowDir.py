@@ -67,27 +67,27 @@ def make_collage(heatmaps, input_img, test_lowpass=[], pxl_margin=5, title=True)
 
     # Create collage: a single class activation map
     if heatmaps.shape[-1] == 3:
-        collage = np.concatenate((ver_frame, input_img_rgb,
-                                  ver_frame, test_lowpass,
+        collage = np.concatenate((ver_frame, test_lowpass,
+                                  ver_frame, input_img_rgb,
                                   ver_frame, heatmaps[0, :, :, 0:3],
                                   ver_frame), axis=1)
 
     # Create collage: two class activation maps
     elif heatmaps.shape[-1] == 6:
-        collage = np.concatenate((ver_frame, input_img_rgb,
-                                  ver_frame, test_lowpass,
+        collage = np.concatenate((ver_frame, test_lowpass,
+                                  ver_frame, input_img_rgb,
                                   ver_frame, heatmaps[0, :, :, 0:3],
                                   ver_frame, heatmaps[0, :, :, 3:6],
                                   ver_frame), axis=1)
 
     # Horizontal portion of the white frame
     hor_frame = 255 * np.ones((pxl_margin, collage.shape[1], 3))
-    
-    zoom = 1  
+
+    zoom = 1
     if (title):
         zoom = 8
-        
-    return np.concatenate((np.tile(hor_frame, (zoom, 1)), collage, hor_frame), axis=0)
+    s = np.tile(hor_frame, (zoom,1, 1))
+    return np.concatenate((s, collage, hor_frame), axis=0)
 
 
 if __name__ == '__main__':
@@ -237,11 +237,11 @@ if __name__ == '__main__':
                                                              img_class_name, k,
                                                              img_class_name,
                                                              os.path.splitext(img_name)[0])),
-                     gradcam_single=heatmap)
+                     heatmap)
             
             np.savetxt(('{}/Data/{}/matrixData_{}_{}_{}_gradcam_double.mat'.format(workdir,
                                                              img_class_name, k,
                                                              img_class_name,
                                                              os.path.splitext(img_name)[0])),
-                     gradcam_single=heatmap_d)
+                     heatmap_d)
   
