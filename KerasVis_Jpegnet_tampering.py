@@ -120,6 +120,7 @@ if __name__ == '__main__':
             out_file = 'detection/{}/single_{:.1f}_double_{:.1f}_out={}.png'.format(current_folder, 1-p, p, class_name)
             
             # Save the composite image, then reload it and put text labels above each sub-image
+            # Adding an asterisk to the class that was chosen by the detector
             labels = ['Mask','Composite','g-CAM single','g-CAM double']
             labels[2] = labels[2] + '*' if class_label == 1 else labels[2]
             labels[3] = labels[3] + '*' if class_label == 0 else labels[3]
