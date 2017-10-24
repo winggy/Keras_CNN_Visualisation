@@ -7,7 +7,7 @@
 import os
 
 
-def draw_captions(img_file, output_dir, labels = ['content', 'high-pass', 'g-CAM single', 'g-CAM double']):
+def draw_captions(img_file, output_dir, labels = ['low-pass', 'high-pass', 'g-CAM single', 'g-CAM double']):
 
     """ Draws a text bar with labels on top of the image
 
