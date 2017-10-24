@@ -24,7 +24,7 @@ def draw_captions(img_file, output_dir, labels = ['low-pass', 'high-pass', 'g-CA
 
     offset = 10
     for i in range(0, len(labels)):
-        draw.text((offset,1), labels[i], font=ImageFont.truetype("arial", 35), fill="red")
+        draw.text((offset,1), labels[i], font=ImageFont.truetype("arial", 35), fill="black")
         offset = offset + int((1/len(labels)) * source_img.width)
 
     # Get rid of the temp file
